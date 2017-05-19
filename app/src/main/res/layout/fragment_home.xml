@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.tan.tracnghiem.monhoc.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Ứng dụng trắc nghiệm đơn giản Toán - Lý - Hóa - Sinh"
+        android:textAllCaps="true"
+        android:textColor="#cce21212"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</FrameLayout>
