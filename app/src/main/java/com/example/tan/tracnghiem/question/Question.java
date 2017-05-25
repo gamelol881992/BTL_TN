@@ -19,6 +19,7 @@ public class Question implements Serializable {
     private String image;
     private String traloi = "";
     public int choiceID = -1; //hỗ trợ check Id của radiogroup
+    private int checkTest;
 
     public String getTraloi() {
         return traloi;
@@ -118,4 +119,11 @@ public class Question implements Serializable {
         return image;
     }
 
+    public int getCheckTest() {
+        return checkTest;
+    }
+
+    public void setCheckTest(int checkTest) {
+        this.checkTest = checkTest;
+    }
 }

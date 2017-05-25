@@ -1,6 +1,7 @@
 package com.example.tan.tracnghiem.slide;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tan.tracnghiem.R;
 import com.example.tan.tracnghiem.question.Question;
@@ -33,6 +36,7 @@ public class ScreenSlidePageFragment extends Fragment {
     RadioGroup radioGroup;
     RadioButton radA, radB, radC, radD;
     ImageView imgIcon;
+    Button btnKiemtra, btnKetthuc;
 
 
     public ScreenSlidePageFragment() {
@@ -53,9 +57,15 @@ public class ScreenSlidePageFragment extends Fragment {
         radB = (RadioButton) rootView.findViewById(R.id.radB);
         radC = (RadioButton) rootView.findViewById(R.id.radC);
         radD = (RadioButton) rootView.findViewById(R.id.radD);
-        imgIcon=(ImageView) rootView.findViewById(R.id.ivIcon) ;
+        imgIcon = (ImageView) rootView.findViewById(R.id.ivIcon);
         radioGroup = (RadioGroup) rootView.findViewById(R.id.radGroup);
+        btnKetthuc = (Button) rootView.findViewById(R.id.btnKetThuc);
+        btnKiemtra = (Button) rootView.findViewById(R.id.btnKiemTra);
+        final TextView txtCheck = (TextView) rootView.findViewById(R.id.txtCheck);
+
+
         return rootView;
+
     }
 
     @Override
@@ -66,7 +76,8 @@ public class ScreenSlidePageFragment extends Fragment {
         ScreenSlideActivity slideActivity = (ScreenSlideActivity) getActivity();
         arr_Ques = slideActivity.getData();
         mPageNumber = getArguments().getInt(ARG_PAGE);
-        checkAns= getArguments().getInt(ARG_CHECKANSWER);
+        checkAns = getArguments().getInt(ARG_CHECKANSWER);
+
 
     }
 
@@ -74,8 +85,9 @@ public class ScreenSlidePageFragment extends Fragment {
         ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, pageNumber);
-        args.putInt(ARG_CHECKANSWER,checkAnswer);
+        args.putInt(ARG_CHECKANSWER, checkAnswer);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -94,16 +106,11 @@ public class ScreenSlidePageFragment extends Fragment {
         radC.setText(getItem(mPageNumber).getAns_c());
         radD.setText(getItem(mPageNumber).getAns_d());
 
-        imgIcon.setImageResource(getResources().getIdentifier(getItem(mPageNumber).getImage()+"","drawable","com.example.tan.tracnghiem"));
+        imgIcon.setImageResource(getResources().getIdentifier(getItem(mPageNumber).getImage() + "", "drawable", "com.example.tan.tracnghiem"));
 
 
-
-        if(checkAns!=0){
-            radA.setClickable(false);
-            radB.setClickable(false);
-            radC.setClickable(false);
-            radD.setClickable(false);
-            getCheckAns(getItem(mPageNumber).getResult().toString());
+        if (checkAns != 0) {
+            checkClickRadio();
         }
 
 
@@ -117,10 +124,44 @@ public class ScreenSlidePageFragment extends Fragment {
             }
         });
 
+        if (getItem(mPageNumber).getCheckTest() == 1) {
+            checkClickRadio();
+        }
+
+        btnKiemtra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkClickRadio();
+                getItem(mPageNumber).setCheckTest(1);
+                getCheckAns_Toast(getItem(mPageNumber).getTraloi().toString());
+            }
+        });
+
+        btnKetthuc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getActivity().finish();
+                Intent intent1 = new Intent(getActivity(), TestDoneActivity.class);
+                intent1.putExtra("arr_Ques", refresh());
+                startActivity(intent1);
+
+            }
+        });
+
+
     }
 
-    public Question getItem(int posotion){
+    public Question getItem(int posotion) {
         return arr_Ques.get(posotion);
+    }
+
+    public void checkClickRadio() {
+        radA.setClickable(false);
+        radB.setClickable(false);
+        radC.setClickable(false);
+        radD.setClickable(false);
+        getCheckAns(getItem(mPageNumber).getResult().toString());
     }
 
     //Lấy giá trị (vị trí) radiogroup chuyển thành đáp án A/B/C/D
@@ -137,17 +178,31 @@ public class ScreenSlidePageFragment extends Fragment {
     }
 
     //Hàm kiểm tra câu đúng, nếu câu đúng thì đổi màu background radiobutton tương ứng
-    private void getCheckAns(String ans){
-        if(ans.equals("A")==true){
+    private void getCheckAns(String ans) {
+        if (ans.equals("A") == true) {
             radA.setBackgroundColor(Color.RED);
-        }
-        else if(ans.equals("B")==true){
+        } else if (ans.equals("B") == true) {
             radB.setBackgroundColor(Color.RED);
-        }else if(ans.equals("C")==true){
+        } else if (ans.equals("C") == true) {
             radC.setBackgroundColor(Color.RED);
-        }else if(ans.equals("D")==true){
+        } else if (ans.equals("D") == true) {
             radD.setBackgroundColor(Color.RED);
-        }else ;
+        } else ;
+    }
+
+    private void getCheckAns_Toast(String ans) {
+
+        if (ans.equals(getItem(mPageNumber).getResult()) == true) {
+            Toast.makeText(getActivity(), "Câu trả lời Đúng", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(getActivity(), "Câu trả lời Sai", Toast.LENGTH_SHORT).show();
+    }
+
+    public ArrayList refresh(){
+        for(int i=0; i<arr_Ques.size(); i++){
+            arr_Ques.get(i).setCheckTest(0);
+            arr_Ques.get(i).setTraloi("");
+        }
+        return arr_Ques;
     }
 
 

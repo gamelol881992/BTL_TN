@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fcfac1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <!-- TODO: Update blank fragment layout -->
+
     <ScrollView
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,5 +100,29 @@
                     android:text="Trả lời 4" />
             </RadioGroup>
         </LinearLayout>
+
     </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kiểm Tra"
+            android:id="@+id/btnKiemTra"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kết thúc"
+            android:id="@+id/btnKetThuc"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtCheck"
+        android:layout_width="300dp"
+        android:layout_height="50dp" />
 </LinearLayout>
